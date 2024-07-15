@@ -4,12 +4,12 @@
 # https://github.com/GameServerManagers/docker-linuxgsm
 #
 
-FROM gameservermanagers/steamcmd:ubuntu-22.04
+FROM docker.atriarch.systems/steamcmd:ubuntu-2204
 
-LABEL maintainer="LinuxGSM <me@danielgibbs.co.uk>"
+LABEL maintainer="Atriarch Systems <postmaster@mail.atriarch.systems>"
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM=xterm
-ENV LGSM_GITHUBUSER=GameServerManagers
+ENV LGSM_GITHUBUSER=Demonslyr
 ENV LGSM_GITHUBREPO=LinuxGSM
 ENV LGSM_GITHUBBRANCH=master
 ENV LGSM_LOGDIR=/data/log
