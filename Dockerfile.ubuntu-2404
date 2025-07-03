@@ -4,7 +4,9 @@
 # https://github.com/Demonslyr/docker-linuxgsm
 #
 
-FROM docker.atriarch.systems/steamcmd:ubuntu-2404
+FROM docker.atriarch.systems/steamcmd:ubuntu-24.04
+## Remove ubuntu user added in 24.04 by default
+RUN touch /var/mail/ubuntu && chown ubuntu /var/mail/ubuntu && userdel -r ubuntu
 
 LABEL maintainer="Atriarch Systems <postmaster@mail.atriarch.systems>"
 ENV DEBIAN_FRONTEND noninteractive
@@ -16,13 +18,14 @@ ENV LGSM_LOGDIR=/data/log
 ENV LGSM_SERVERFILES=/data/serverfiles
 ENV LGSM_DATADIR=/data/data
 ENV LGSM_CONFIG=/data/config-lgsm
+ENV LGSM_COMPRESSEDMAPSDIR=/data/Maps-Compressed
 ENV LGSM_DEV=false
 ENV GAMESERVER=jc2server
 ENV VALIDATE_ON_START=false
 ENV UPDATE_CHECK=60
 ENV USER=linuxgsm
-ENV UID=1001
-ENV GID=1001
+ENV UID=1000
+ENV GID=1000
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -63,6 +66,7 @@ RUN echo "**** Install Base LinuxGSM Requirements ****" \
   uuid-runtime \
   wget \
   xz-utils \
+  zstd \
   # Docker Extras
   iproute2 \
   iputils-ping \
@@ -135,6 +139,9 @@ RUN echo "$CACHEBUST"
 COPY entrypoint.sh /app/entrypoint.sh
 COPY entrypoint-user.sh /app/entrypoint-user.sh
 COPY entrypoint-healthcheck.sh /app/entrypoint-healthcheck.sh
+
+## Ensure entrypoint scripts have execute permissions
+RUN chmod +x /app/entrypoint.sh /app/entrypoint-user.sh /app/entrypoint-healthcheck.sh
 
 RUN date > /build-time.txt
 
