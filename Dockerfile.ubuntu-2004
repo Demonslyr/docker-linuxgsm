@@ -1,17 +1,17 @@
 #
 # LinuxGSM Base Dockerfile
 #
-# https://github.com/GameServerManagers/docker-linuxgsm
+# https://github.com/Demonslyr/docker-linuxgsm
 #
 
-FROM ghcr.io/gameservermanagers/steamcmd:ubuntu-20.04
+FROM docker.atriarch.systems/steamcmd:ubuntu-20.04
 
-LABEL maintainer="LinuxGSM <me@danielgibbs.co.uk>"
+LABEL maintainer="Atriarch Systems <postmaster@mail.atriarch.systems>"
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM=xterm
-ENV LGSM_GITHUBUSER=GameServerManagers
+ENV LGSM_GITHUBUSER=Demonslyr
 ENV LGSM_GITHUBREPO=LinuxGSM
-ENV LGSM_GITHUBBRANCH=master
+ENV LGSM_GITHUBBRANCH=atriarch
 ENV LGSM_LOGDIR=/data/log
 ENV LGSM_SERVERFILES=/data/serverfiles
 ENV LGSM_DATADIR=/data/data
@@ -115,11 +115,11 @@ HEALTHCHECK --interval=1m --timeout=1m --start-period=2m --retries=1 CMD /app/en
 ## Download linuxgsm.sh
 RUN echo "**** Download linuxgsm.sh ****" \
   && set -ex \
-  && curl -Lo linuxgsm.sh "https://raw.githubusercontent.com/GameServerManagers/LinuxGSM/${LGSM_GITHUBBRANCH}/linuxgsm.sh" \
+  && curl -Lo linuxgsm.sh "https://raw.githubusercontent.com/Demonslyr/LinuxGSM/${LGSM_GITHUBBRANCH}/linuxgsm.sh" \
   && chmod +x linuxgsm.sh
 
 RUN echo "**** Get LinuxGSM Modules ****" \
-  && git clone --filter=blob:none --no-checkout --sparse https://github.com/GameServerManagers/LinuxGSM.git \
+  && git clone --filter=blob:none --no-checkout --sparse https://github.com/Demonslyr/LinuxGSM.git \
   && cd LinuxGSM \
   && git sparse-checkout set --cone \
   && git sparse-checkout set lgsm/modules \
